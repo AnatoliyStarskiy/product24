@@ -1,0 +1,46 @@
+$(document).ready(function () {
+  $(".slider").bxSlider();
+});
+
+$(function() {
+    let Accordion = function(el, multiple) {
+      this.el = el || {};
+      // more then one submenu open?
+      this.multiple = multiple || false;
+      
+      let dropdownlink = this.el.find('.dropdownlink');
+      dropdownlink.on('click',
+                      { el: this.el, multiple: this.multiple },
+                      this.dropdown);
+    };
+    
+    Accordion.prototype.dropdown = function(e) {
+      let $el = e.data.el,
+          $this = $(this),
+          //this is the ul.submenuItems
+          $next = $this.next();
+      
+      $next.slideToggle();
+      $this.parent().toggleClass('open');
+      
+      if(!e.data.multiple) {
+        //show only one menu at the same time
+        $el.find('.submenuItems').not($next).slideUp().parent().removeClass('open');
+      }
+    }
+    
+    let accordion = new Accordion($('.accordion-menu'), false);
+  })
+
+
+  $("ul.nav__item").on(
+    "click",
+    "li:not(.nav__button_active)",
+    function () {
+      $(this)
+        .addClass("nav__button_active")
+        .siblings()
+        .removeClass("nav__button_active");
+        
+    }
+  );
